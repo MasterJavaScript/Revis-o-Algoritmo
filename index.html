@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplos OverPower em VisualG 3.0</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --text-color: #2d3436;
+            --code-bg: #f8f9fa;
+            --border-color: #dfe6e9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f5f6fa;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+        }
+
+        p {
+            margin: 1rem 0;
+        }
+
+        ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #e84393;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            vertical-align: middle;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px dashed var(--secondary-color);
+            margin: 2rem 0;
+        }
+
+        .highlight {
+            background-color: #ffeaa7;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💻 Exemplos OverPower em VisualG 3.0</h1>
+
+        <p>Organizado por tópicos: <strong>Vetores</strong>, <strong>Matrizes</strong>, <strong>Procedimentos</strong>, <strong>Condicional SE</strong>, <strong>Loops (Para, Enquanto, Repita)</strong>. Tudo no estilo do Pablo Vitar! 😎</p>
+
+        <hr>
+
+        <section id="vetores">
+            <h2>🧮 VETORES</h2>
+            <h3>🚀 Exemplo de VETOR no VisualG:</h3>
+            <pre><code>algoritmo "Exemplo de Vetor"
+var
+  numeros: vetor[1..5] de inteiro
+  i: inteiro
+inicio
+  // Preenchendo o vetor
+  para i de 1 ate 5 faca
+     escreva("Digite o ", i, "º número: ")
+     leia(numeros[i])
+  fimpara
+
+  // Mostrando os valores do vetor
+  escreval("Valores digitados:")
+  para i de 1 ate 5 faca
+     escreval("Posição ", i, ": ", numeros[i])
+  fimpara
+fimalgoritmo</code></pre>
+
+            <h3>🧠 O que tá rolando aqui:</h3>
+            <ul>
+                <li><code>vetor[1..5] de inteiro</code> → Cria um vetor com 5 posições (de 1 até 5).</li>
+                <li>Dois <code>para ... faca</code> → Um pra <strong>preencher</strong> e outro pra <strong>mostrar</strong> os dados.</li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <section id="matrizes">
+            <h2>🧩 MATRIZES</h2>
+            <h3>🧩 Exemplo de MATRIZ no VisualG:</h3>
+            <pre><code>algoritmo "Exemplo de Matriz"
+var
+  matriz: vetor[1..2, 1..3] de inteiro
+  i, j: inteiro
+inicio
+  // Preenchendo a matriz
+  para i de 1 ate 2 faca
+    para j de 1 ate 3 faca
+      escreva("Digite o valor da posição [", i, "][", j, "]: ")
+      leia(matriz[i, j])
+    fimpara
+  fimpara
+
+  // Mostrando os valores da matriz
+  escreval("Valores da matriz:")
+  para i de 1 ate 2 faca
+    para j de 1 ate 3 faca
+      escreval("Posição [", i, "][", j, "] = ", matriz[i, j])
+    fimpara
+  fimpara
+fimalgoritmo</code></pre>
+
+            <h3>📌 Explicação:</h3>
+            <ul>
+                <li><code>matriz[1..2, 1..3]</code>: significa que a matriz tem <strong>2 linhas</strong> e <strong>3 colunas</strong>.</li>
+                <li>Dois <code>para</code> aninhados: um pra <strong>linha</strong> e outro pra <strong>coluna</strong>.</li>
+                <li>Funciona igual uma tabela com valores, bem visual.</li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <section id="procedimentos">
+            <h2>🧾 PROCEDIMENTOS</h2>
+            <h3>⚡ Exemplo de PROCEDIMENTO no VisualG 3.0:</h3>
+            <pre><code>algoritmo "Exemplo de Procedimento"
+var
+  nome: caractere
+
+// Declaração do procedimento
+procedimento saudacao()
+inicio
+  escreval("Fala, Gafanhoto! Seja bem-vindo ao VisualG!")
+fimprocedimento
+
+inicio
+  escreva("Digite seu nome: ")
+  leia(nome)
+
+  saudacao()  // Chamada do procedimento
+
+  escreval("Seu nome é ", nome)
+fimalgoritmo</code></pre>
+
+            <h3>O que rolou aqui:</h3>
+            <ul>
+                <li><code>procedimento saudacao()</code> é o pedaço de código que você chama quando quiser que ele execute a saudação.</li>
+                <li>Ele não recebe parâmetro nem retorna nada, só imprime uma mensagem.</li>
+                <li>Dentro do <code>inicio...fim</code> principal, a gente chama <code>saudacao()</code> pra executar o código do procedimento.</li>
+            </ul>
+
+            <h3>🚀 Procedimento com parâmetro no VisualG 3.0:</h3>
+            <pre><code>algoritmo "Procedimento com Parâmetro"
+var
+  nome: caractere
+
+// Procedimento que recebe o nome e fala a saudação personalizada
+procedimento saudacao(nomePessoa: caractere)
+inicio
+  escreval("Fala, ", nomePessoa, "! Seja bem-vindo ao VisualG!")
+fimprocedimento
+
+inicio
+  escreva("Digite seu nome: ")
+  leia(nome)
+
+  saudacao(nome)  // Chama o procedimento passando o nome
+
+fimalgoritmo</code></pre>
+        </section>
+
+        <hr>
+
+        <section id="condicional">
+            <h2>❓ CONDICIONAL SE</h2>
+            <h3>✅ Exemplo simples e OverPower de `SE` no VisualG 3.0:</h3>
+            <pre><code>algoritmo "Exemplo de SE"
+var
+  idade: inteiro
+inicio
+  escreva("Digite sua idade: ")
+  leia(idade)
+
+  se idade >= 18 entao
+    escreval("Você é maior de idade.")
+  senao
+    escreval("Você é menor de idade.")
+  fimse
+fimalgoritmo</code></pre>
+
+            <h3>🧠 O que tá rolando:</h3>
+            <ul>
+                <li>Se a idade for <strong>maior ou igual a 18</strong>, mostra que é maior de idade.</li>
+                <li>Senão, mostra que é menor.</li>
+                <li>Simples, direto, estilo Gafanhoto Pro! 😎</li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <section id="loops">
+            <h2>🔁 LOOPS</h2>
+            <h3>🚀 Exemplo básico do comando `PARA` no VisualG 3.0:</h3>
+            <pre><code>algoritmo "Exemplo de Para"
+var
+  i: inteiro
+inicio
+  para i de 1 ate 10 faca
+    escreval("Contagem: ", i)
+  fimpara
+fimalgoritmo</code></pre>
+
+            <h3>O que rolou:</h3>
+            <ul>
+                <li>O <code>para</code> faz o <code>i</code> começar em 1 e ir até 10, somando 1 a cada rodada automaticamente.</li>
+                <li>A cada ciclo, imprime "Contagem: i".</li>
+                <li>Quando chegar em 10, para o loop e o programa termina.</li>
+            </ul>
+
+            <h3>🌀 Exemplo OverPower de `ENQUANTO` no VisualG:</h3>
+            <pre><code>algoritmo "Exemplo de Enquanto"
+var
+  contador: inteiro
+inicio
+  contador := 1
+
+  enquanto contador <= 5 faca
+    escreval("Contador: ", contador)
+    contador := contador + 1
+  fimenquanto
+fimalgoritmo</code></pre>
+
+            <h3>Como funciona:</h3>
+            <ul>
+                <li>Começa com <code>contador = 1</code>.</li>
+                <li>Enquanto <code>contador <= 5</code>, o loop roda.</li>
+                <li>A cada volta, soma 1 no contador.</li>
+                <li>Quando passar de 5, ele sai do loop.</li>
+            </ul>
+
+            <h3>🧠 Diferença pra `PARA`:</h3>
+            <ul>
+                <li><code>PARA</code> é quando você <strong>já sabe quantas vezes</strong> vai repetir.</li>
+                <li><code>ENQUANTO</code> é quando depende de uma <strong>condição</strong>, que pode mudar no meio da execução.</li>
+            </ul>
+
+            <h3>🔁 Exemplo OverPower de `REPITA` no VisualG 3.0:</h3>
+            <pre><code>algoritmo "Exemplo de REPITA"
+var
+  senha: inteiro
+inicio
+  repita
+    escreva("Digite a senha (1234): ")
+    leia(senha)
+  ate senha = 1234
+
+  escreval("Acesso liberado!")
+fimalgoritmo</code></pre>
+
+            <h3>🧠 Explicação modo Gafanhoto Pro:</h3>
+            <ul>
+                <li>O <code>REPITA ... ATE</code> vai rodar <strong>até</strong> a condição ser <strong>verdadeira</strong> (<code>senha = 1234</code>).</li>
+                <li>Mesmo se o usuário errar a senha, o programa continua pedindo até acertar.</li>
+                <li>Ele <strong>sempre executa pelo menos uma vez</strong>, diferente do <code>ENQUANTO</code>.</li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>
