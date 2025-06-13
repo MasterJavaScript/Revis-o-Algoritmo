@@ -306,6 +306,41 @@ fimalgoritmo</code></pre>
 
         <hr>
 
+        <section id="funcoes">
+            <h2>🔢 FUNÇÕES</h2>
+            <h3>⚙️ Exemplo OverPower de `FUNÇÃO` no VisualG 3.0:</h3>
+            <pre><code>algoritmo "Exemplo de Função"
+var
+  num1, num2, resultado: inteiro
+
+// Função que soma dois números
+funcao somar(a, b: inteiro): inteiro
+inicio
+  somar := a + b
+fimfuncao
+
+inicio
+  escreva("Digite o primeiro número: ")
+  leia(num1)
+
+  escreva("Digite o segundo número: ")
+  leia(num2)
+
+  resultado := somar(num1, num2) // Chama a função e guarda o retorno
+
+  escreval("A soma é: ", resultado)
+fimalgoritmo</code></pre>
+
+            <h3>🧠 Entendendo o rolê:</h3>
+            <ul>
+                <li><code>funcao somar(a, b: inteiro): inteiro</code> → Cria uma função que recebe dois inteiros e retorna um inteiro.</li>
+                <li><code>somar := a + b</code> → Aqui a função <strong>devolve</strong> o resultado.</li>
+                <li>No <code>inicio</code>, chamamos <code>somar(num1, num2)</code> e jogamos o retorno em <code>resultado</code>.</li>
+            </ul>
+        </section>
+
+        <hr>
+
         <section id="condicional">
             <h2>❓ CONDICIONAL SE</h2>
             <h3>✅ Exemplo simples e OverPower de `SE` no VisualG 3.0:</h3>
