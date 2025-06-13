@@ -172,11 +172,93 @@
             }
 
             .container {
-                padding: 1rem;
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: clamp(1.8rem, 6vw, 2.5rem);
+            }
+
+            h2 {
+                font-size: clamp(1.5rem, 4vw, 2rem);
+            }
+
+            h3 {
+                font-size: clamp(1.2rem, 3vw, 1.5rem);
+            }
+
+            p {
+                font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            }
+
+            li {
+                font-size: clamp(0.9rem, 2.5vw, 1rem);
             }
 
             pre {
                 padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .theme-toggle {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            .highlight {
+                padding: 0.1rem 0.3rem;
+            }
+
+            .emoji {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.8rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: clamp(1.6rem, 5vw, 2rem);
+            }
+
+            h2 {
+                font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+            }
+
+            h3 {
+                font-size: clamp(1.1rem, 3vw, 1.3rem);
+            }
+
+            p {
+                font-size: clamp(0.85rem, 2.5vw, 1rem);
+            }
+
+            li {
+                font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            }
+
+            pre {
+                padding: 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .theme-toggle {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .highlight {
+                padding: 0.1rem 0.2rem;
+            }
+
+            .emoji {
+                font-size: 1.1em;
             }
         }
     </style>
