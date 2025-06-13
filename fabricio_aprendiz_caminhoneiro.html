@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisualG 3.0 - MODO CAMINHONEIRO ATIVO 🚛</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Bebas+Neue&display=swap');
+        
+        :root {
+            --primary-color: #ff6b35;
+            --secondary-color: #f7931e;
+            --accent-color: #ffd23f;
+            --dark-color: #1a1a1a;
+            --text-color: #ffffff;
+            --code-bg: #2d2d2d;
+            --container-bg: #333333;
+            --neon-glow: 0 0 20px #ff6b35, 0 0 40px #ff6b35, 0 0 60px #ff6b35;
+            --truck-sound: 'VROOOOM';
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(247, 147, 30, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 210, 63, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .truck-container {
+            position: fixed;
+            top: 50%;
+            right: -200px;
+            transform: translateY(-50%);
+            font-size: 6rem;
+            animation: truckDrive 15s linear infinite;
+            z-index: 1000;
+            text-shadow: var(--neon-glow);
+        }
+
+        @keyframes truckDrive {
+            0% { right: -200px; }
+            50% { right: calc(100% + 200px); }
+            100% { right: -200px; }
+        }
+
+        .horn-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--neon-glow);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .horn-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #ff6b35, 0 0 60px #ff6b35, 0 0 90px #ff6b35;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(2rem, 8vw, 4rem);
+            text-align: center;
+            margin: 2rem 0;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        h1::after {
+            content: "🚛💨";
+            position: absolute;
+            right: -100px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(-50%); }
+            40% { transform: translateY(-60%); }
+            60% { transform: translateY(-40%); }
+        }
+
+        h2 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: var(--secondary-color);
+            text-shadow: var(--neon-glow);
+            margin: 2rem 0 1rem 0;
+            border-left: 5px solid var(--primary-color);
+            padding-left: 1rem;
+        }
+
+        h3 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            color: var(--accent-color);
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .container {
+            background: var(--container-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            border: 2px solid var(--primary-color);
+            box-shadow: 
+                0 0 20px rgba(255, 107, 53, 0.3),
+                inset 0 0 20px rgba(255, 107, 53, 0.1);
+            position: relative;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            border-radius: 20px;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes borderGlow {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid var(--primary-color);
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            line-height: 1.6;
+            box-shadow: inset 0 0 20px rgba(255, 107, 53, 0.2);
+        }
+
+        code {
+            color: var(--accent-color);
+            text-shadow: 0 0 5px var(--accent-color);
+        }
+
+        p, li {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            line-height: 1.8;
+            margin: 1rem 0;
+        }
+
+        ul {
+            padding-left: 2rem;
+        }
+
+        li {
+            margin: 0.8rem 0;
+            position: relative;
+        }
+
+        li::before {
+            content: "🔧";
+            position: absolute;
+            left: -1.5rem;
+        }
+
+        .caminhoneiro-phrase {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            margin: 2rem 0;
+            text-align: center;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.3rem;
+            box-shadow: var(--neon-glow);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .road-divider {
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--accent-color) 0px,
+                var(--accent-color) 30px,
+                transparent 30px,
+                transparent 60px
+            );
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        /* .road-divider::before {
+            content: "🛣️";
+            position: absolute;
+            left: 50%;
+            top: -15px;
+            transform: translateX(-50%);
+            font-size: 2rem;
+        } */
+
+        .fuel-meter {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--container-bg);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid var(--primary-color);
+            font-family: 'Bebas Neue', cursive;
+        }
+
+        .fuel-bar {
+            width: 100px;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .fuel-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            width: 75%;
+            animation: fuelConsume 20s linear infinite;
+        }
+
+        @keyframes fuelConsume {
+            0% { width: 100%; }
+            100% { width: 20%; }
+        }
+
+        .easter-egg {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .easter-egg:hover {
+            transform: scale(1.2) rotate(360deg);
+            text-shadow: var(--neon-glow);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+
+            pre {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            h1 {
+                font-size: clamp(1.8rem, 6vw, 3rem);
+            }
+
+            h2 {
+                font-size: clamp(1.4rem, 4vw, 2rem);
+            }
+
+            h3 {
+                font-size: clamp(1.2rem, 3vw, 1.6rem);
+            }
+
+            p, li {
+                font-size: clamp(0.9rem, 2.5vw, 1rem);
+            }
+
+            .truck-container {
+                display: none;
+            }
+
+            .horn-button {
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+
+            .caminhoneiro-phrase {
+                padding: 0.8rem 1.5rem;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.8rem;
+            }
+
+            pre {
+                padding: 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .horn-button {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="truck-container">🚛</div>
+    
+    <button class="horn-button" onclick="honkHorn()">🚨 BUZINAR</button>
+    
+    <div class="fuel-meter">
+        ⛽ COMBUSTÍVEL
+        <div class="fuel-bar">
+            <div class="fuel-fill"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>VISUALG 3.0 - MODO CAMINHONEIRO ATIVO</h1>
+        
+        <div class="caminhoneiro-phrase">
+            🚛 "QUEBRA GALHO QUE NÃO É MOLE NÃO, PARCEIRO!" 💪
+        </div>
+
+        <p>Salve, <strong>CAMINHONEIRO</strong>! 🚛 Aqui é programação <span class="easter-egg" onclick="playEngineSound()">BRUTA</span> no VisualG! Sem frescura, só código <strong>RAIZ</strong> pra quem manja do riscado! Segura o <strong>VOLANTE</strong> que vamos <strong>DESCER A SERRA</strong> programando!</p>
+
+        <div class="road-divider"></div>
+
+        <section id="vetores">
+            <h2>🧮 VETORES - CARREGANDO A CARRETA</h2>
+            <div class="caminhoneiro-phrase">
+                "VETOR É COMO CARRETA, PARCEIRO - TEM VÁRIOS COMPARTIMENTOS!" 🚚
+            </div>
+            
+            <h3>🚛 Carregando a Carreta com VETOR:</h3>
+            <pre><code>algoritmo "Carregando a Carreta"
+var
+  carga: vetor[1..5] de inteiro
+  compartimento: inteiro
+inicio
+  escreval("🚛 HORA DE CARREGAR A CARRETA, CAMINHONEIRO!")
+  
+  // Carregando cada compartimento
+  para compartimento de 1 ate 5 faca
+     escreva("Quantos KG no compartimento ", compartimento, "? ")
+     leia(carga[compartimento])
+  fimpara
+
+  escreval("📋 MANIFEST0 DE CARGA:")
+  para compartimento de 1 ate 5 faca
+     escreval("Compartimento ", compartimento, ": ", carga[compartimento], " KG")
+  fimpara
+  
+  escreval("🏁 CARRETA CARREGADA! BORA PRA ESTRADA!")
+fimalgoritmo</code></pre>
+
+            <h3>💡 Entendendo o TRAMPO:</h3>
+            <ul>
+                <li><code>vetor[1..5]</code> → É como uma carreta com 5 compartimentos, cada um numerado!</li>
+                <li>Primeiro loop → Carrega cada compartimento com peso</li>
+                <li>Segundo loop → Confere o manifesto de carga</li>
+                <li>Assim fica organizado que nem carreta de caminhoneiro profissa!</li>
+            </ul>
+        </section>
+
+        <div class="road-divider"></div>
+
+        <section id="matrizes">
+            <h2>🧩 MATRIZES - ORGANIZANDO O PÁTIO</h2>
+            <div class="caminhoneiro-phrase">
+                "MATRIZ É COMO PÁTIO DE POSTO - FILEIRA E COLUNA CERTINHA!" ⛽
+            </div>
+            
+            <h3>🅿️ Organizando o Pátio de Caminhões:</h3>
+            <pre><code>algoritmo "Pátio de Caminhões"
+var
+  patio: vetor[1..3, 1..4] de caractere
+  fileira, vaga: inteiro
+inicio
+  escreval("🚛 ORGANIZANDO O PÁTIO DO POSTO!")
+  
+  // Preenchendo cada vaga do pátio
+  para fileira de 1 ate 3 faca
+    para vaga de 1 ate 4 faca
+      escreva("Caminhão na fileira ", fileira, " vaga ", vaga, ": ")
+      leia(patio[fileira, vaga])
+    fimpara
+  fimpara
+
+  escreval("📍 MAPA DO PÁTIO:")
+  para fileira de 1 ate 3 faca
+    para vaga de 1 ate 4 faca
+      escreval("Fileira ", fileira, " Vaga ", vaga, ": ", patio[fileira, vaga])
+    fimpara
+  fimpara
+  
+  escreval("✅ PÁTIO ORGANIZADO, SÓCIO!")
+fimalgoritmo</code></pre>
+
+            <h3>🎯 Como funciona esse TREM:</h3>
+            <ul>
+                <li><code>patio[1..3, 1..4]</code> → 3 fileiras com 4 vagas cada = 12 vagas total</li>
+                <li>Loops aninhados → Um pra fileira, outro pra vaga</li>
+                <li>Fica organizadinho igual pátio de posto na estrada!</li>
+            </ul>
+        </section>
+
+        <div class="road-divider"></div>
+
+        <section id="procedimentos">
+            <h2>🧾 PROCEDIMENTOS - ROTINA DE CAMINHONEIRO</h2>
+            <div class="caminhoneiro-phrase">
+                "PROCEDIMENTO É COMO ROTINA: FAZ SEMPRE A MESMA COISA!" 🔄
+            </div>
+            
+            <h3>☕ Rotina da Parada:</h3>
+            <pre><code>algoritmo "Rotina de Caminhoneiro"
+var
+  nome_motorista: caractere
+
+// Procedimento da parada obrigatória
+procedimento parada_posto()
+inicio
+  escreval("🚛 CHEGAMOS NO POSTO!")
+  escreval("⛽ Abastecendo...")
+  escreval("🍖 Passadinha no restaurante...")
+  escreval("🚿 Banho rápido...")
+  escreval("✅ PRONTO PRA ESTRADA!")
+fimprocedimento
+
+inicio
+  escreva("Qual seu nome, caminhoneiro? ")
+  leia(nome_motorista)
+  
+  escreval("Fala ", nome_motorista, "! BORA RODAR!")
+  
+  parada_posto()  // Chamando a rotina
+  
+  escreval("🏁 PRÓXIMA PARADA: 500KM!")
+fimalgoritmo</code></pre>
+
+            <h3>🚛 Procedimento com Parâmetro - Checagem da Carga:</h3>
+            <pre><code>algoritmo "Checagem da Carga"
+var
+  tipo_carga: caractere
+
+// Procedimento que checa cada tipo de carga
+procedimento checar_carga(tipo: caractere)
+inicio
+  escreval("🔍 CHECANDO CARGA: ", tipo)
+  se tipo = "PERIGOSA" entao
+    escreval("⚠️ CUIDADO! Carga perigosa detectada!")
+    escreval("🚨 Seguindo protocolos de segurança...")
+  senao
+    escreval("✅ Carga normal. VAMO QUE VAMO!")
+  fimse
+fimprocedimento
+
+inicio
+  escreva("Que tipo de carga tá levando? ")
+  leia(tipo_carga)
+  
+  checar_carga(tipo_carga)  // Chama com o tipo informado
+  
+  escreval("🛣️ ESTRADA LIBERADA!")
+fimalgoritmo</code></pre>
+        </section>
+
+        <div class="road-divider"></div>
+
+        <section id="funcoes">
+            <h2>🔢 FUNÇÕES - CALCULANDO A VIAGEM</h2>
+            <div class="caminhoneiro-phrase">
+                "FUNÇÃO É COMO CALCULADORA: ENTRA DADOS, SAI RESULTADO!" 🧮
+            </div>
+            
+            <h3>💰 Calculando o Frete:</h3>
+            <pre><code>algoritmo "Calculadora de Frete"
+var
+  distancia, peso_carga, valor_frete: real
+
+// Função que calcula o valor do frete
+funcao calcular_frete(km: real; peso: real): real
+var
+  valor_por_km, valor_por_kg: real
+inicio
+  valor_por_km := 2.50  // R$ 2,50 por KM
+  valor_por_kg := 0.80  // R$ 0,80 por KG
+  
+  calcular_frete := (km * valor_por_km) + (peso * valor_por_kg)
+fimfuncao
+
+inicio
+  escreval("💰 CALCULADORA DE FRETE - MODO CAMINHONEIRO")
+  
+  escreva("Distância da viagem (KM): ")
+  leia(distancia)
+  
+  escreva("Peso da carga (KG): ")
+  leia(peso_carga)
+  
+  valor_frete := calcular_frete(distancia, peso_carga)
+  
+  escreval("🚛 RESULTADO:")
+  escreval("📏 Distância: ", distancia, " KM")
+  escreval("⚖️ Peso: ", peso_carga, " KG")
+  escreval("💵 VALOR DO FRETE: R$ ", valor_frete:2:2)
+  escreval("🏁 NEGOCIA AÍ, PARCEIRO!")
+fimalgoritmo</code></pre>
+
+            <h3>🧠 Sacando a PARADA:</h3>
+            <ul>
+                <li><code>funcao calcular_frete(km: real; peso: real): real</code> → Recebe KM e peso, devolve o valor</li>
+                <li><code>calcular_frete := ...</code> → Aqui é onde a função RETORNA o resultado</li>
+                <li>No programa principal, chamamos e guardamos o resultado em <code>valor_frete</code></li>
+            </ul>
+        </section>
+
+        <div class="road-divider"></div>
+
+        <section id="condicional">
+            <h2>❓ CONDICIONAL SE - DECIDINDO NA ESTRADA</h2>
+            <div class="caminhoneiro-phrase">
+                "SE A ESTRADA TÁ BOA, METE O PÉ! SE NÃO, VAI DEVAGAR!" 🛣️
+            </div>
+            
+            <h3>🌧️ Checando as Condições da Estrada:</h3>
+            <pre><code>algoritmo "Condições da Estrada"
+var
+  condicao_tempo: caractere
+  velocidade: inteiro
+inicio
+  escreva("Como tá o tempo? (BOM/CHUVA/NEBLINA): ")
+  leia(condicao_tempo)
+  
+  se condicao_tempo = "BOM" entao
+    velocidade := 90
+    escreval("☀️ TEMPO BOM! METE O PÉ, CAMINHONEIRO!")
+    escreval("🚛 Velocidade segura: ", velocidade, " km/h")
+  senao
+    se condicao_tempo = "CHUVA" entao
+      velocidade := 60
+      escreval("🌧️ CHUVA NA PISTA! VAI DEVAGAR!")
+      escreval("🚛 Velocidade segura: ", velocidade, " km/h")
+    senao
+      se condicao_tempo = "NEBLINA" entao
+        velocidade := 40
+        escreval("🌫️ NEBLINA PESADA! MUITO CUIDADO!")
+        escreval("🚛 Velocidade segura: ", velocidade, " km/h")
+        escreval("🚨 LIGA O PISCA-ALERTA!")
+      senao
+        escreval("❓ Não entendi... Vai com cuidado!")
+        velocidade := 50
+      fimse
+    fimse
+  fimse
+  
+  escreval("🏁 BOA VIAGEM, PARCEIRO!")
+fimalgoritmo</code></pre>
+
+            <h3>🎯 Como funciona essa DECISÃO:</h3>
+            <ul>
+                <li>Testa primeiro se é "BOM" → manda 90 km/h</li>
+                <li>Se não for, testa se é "CHUVA" → manda 60 km/h</li>
+                <li>Se não for, testa "NEBLINA" → manda 40 km/h e liga pisca-alerta</li>
+                <li>Se não for nenhum → vai de 50 km/h pra não dar ruim!</li>
+            </ul>
+        </section>
+
+        <div class="road-divider"></div>
+
+        <section id="loops">
+            <h2>🔁 LOOPS - RODA QUE NÃO PARA</h2>
+            <div class="caminhoneiro-phrase">
+                "LOOP É COMO RODA DE CAMINHÃO: GIRA, GIRA E NÃO PARA!" 🔄
+            </div>
+            
+            <h3>🚀 Contador de KM com `PARA`:</h3>
+            <pre><code>algoritmo "Contador de Quilometragem"
+var
+  km: inteiro
+inicio
+  escreval("🚛 INICIANDO A VIAGEM!")
+  escreval("📏 CONTANDO OS QUILÔMETROS...")
+  
+  para km de 0 ate 100 passo 10 faca
+    escreval("KM rodado: ", km)
+    escreval("🛣️ Seguindo viagem...")
+  fimpara
+  
+  escreval("🏁 CHEGAMOS! 100 KM RODADOS!")
+fimalgoritmo</code></pre>
+
+            <h3>🌀 Esperando a Carga com `ENQUANTO`:</h3>
+            <pre><code>algoritmo "Esperando a Carga"
+var
+  carga_pronta: caractere
+  tempo_espera: inteiro
+inicio
+  tempo_espera := 0
+  carga_pronta := "NAO"
+  
+  escreval("🚛 AGUARDANDO LIBERAÇÃO DA CARGA...")
+  
+  enquanto carga_pronta <> "SIM" faca
+    tempo_espera := tempo_espera + 15
+    escreval("⏰ Esperando há ", tempo_espera, " minutos...")
+    escreva("Carga liberada? (SIM/NAO): ")
+    leia(carga_pronta)
+  fimenquanto
+  
+  escreval("✅ CARGA LIBERADA!")
+  escreval("🏁 BORA PRA ESTRADA, PARCEIRO!")
+fimalgoritmo</code></pre>
+
+            <h3>🔁 Checagem de Documentos com `REPITA`:</h3>
+            <pre><code>algoritmo "Checagem de Documentos"
+var
+  documento: caractere
+inicio
+  escreval("🚛 BLITZ NA ESTRADA!")
+  escreval("👮 FISCAL: Preciso ver seus documentos!")
+  
+  repita
+    escreval("📋 Apresente o documento:")
+    escreval("1 - CNH")
+    escreval("2 - RNTRC") 
+    escreval("3 - LICENCIAMENTO")
+    escreval("Digite OK quando tudo estiver certo: ")
+    leia(documento)
+    
+    se documento <> "OK" entao
+      escreval("❌ Documento incompleto! Tenta de novo...")
+    fimse
+    
+  ate documento = "OK"
+  
+  escreval("✅ DOCUMENTAÇÃO OK!")
+  escreval("🚛 LIBERADO! BOA VIAGEM!")
+fimalgoritmo</code></pre>
+
+            <h3>🧠 Diferença dos LOOPS na estrada:</h3>
+            <ul>
+                <li><code>PARA</code> → Quando você sabe EXATAMENTE quantos KM vai rodar</li>
+                <li><code>ENQUANTO</code> → Enquanto não liberar a carga, fica esperando</li>
+                <li><code>REPITA</code> → Fica pedindo documento até estar tudo OK</li>
+            </ul>
+        </section>
+
+        <div class="caminhoneiro-phrase">
+            🚛 "É ISSO AÍ, CAMINHONEIRO! CÓDIGO BRUTO PRA QUEM É RAIZ!" 💪
+        </div>
+    </div>
+
+    <script>
+        // Array de sons de buzina
+        const hornSounds = [
+            "🚨 FOOOOOOM! 🚨",
+            "📯 PAAAAAM! 📯", 
+            "🔊 BIIIIIP! 🔊",
+            "⚡ VROOOOM! ⚡"
+        ];
+
+        // Array de frases de caminhoneiro
+        const phrases = [
+            "🚛 QUE ISSO, PARCEIRO!",
+            "💪 QUEBRA GALHO DANADO!",
+            "🏁 METE O PÉ NA TÁBUA!",
+            "⚡ ISSO É BRUTO, SÓCIO!",
+            "🔥 TÁ PEGANDO FOGO!",
+            "🚨 VAI COM CALMA NA CURVA!"
+        ];
+
+        function honkHorn() {
+            const randomHorn = hornSounds[Math.floor(Math.random() * hornSounds.length)];
+            const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            
+            // Criar elemento temporário para mostrar o som
+            const hornDisplay = document.createElement('div');
+            hornDisplay.innerHTML = randomHorn + "<br>" + randomPhrase;
+            hornDisplay.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, #ff6b35, #f7931e);
+                color: white;
+                padding: 2rem;
+                border-radius: 20px;
+                font-size: 2rem;
+                font-family: 'Bebas Neue', cursive;
+                text-align: center;
+                z-index: 9999;
+                box-shadow: 0 0 50px #ff6b35;
+                animation: hornPop 4s ease-out forwards;
+            `;
+            
+            // Adicionar animação CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes hornPop {
+                    0% { 
+                        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                        opacity: 0;
+                    }
+                    50% { 
+                        transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+                        opacity: 1;
+                    }
+                    100% { 
+                        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(hornDisplay);
+            
+            // Remover após animação
+            setTimeout(() => {
+                document.body.removeChild(hornDisplay);
+                document.head.removeChild(style);
+            }, 4000);
+        }
+
+        function playEngineSound() {
+            const engineSound = "🚛 VROOOOM! VROOOOM! 🚛";
+            const engineDisplay = document.createElement('div');
+            engineDisplay.innerHTML = engineSound;
+            engineDisplay.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, #ff6b35, #f7931e);
+                color: white;
+                padding: 2rem;
+                border-radius: 20px;
+                font-size: 2rem;
+                font-family: 'Bebas Neue', cursive;
+                text-align: center;
+                z-index: 9999;
+                box-shadow: 0 0 50px #ff6b35;
+                animation: enginePop 4s ease-out forwards;
+            `;
+            
+            // Adicionar animação CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes enginePop {
+                    0% { 
+                        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                        opacity: 0;
+                    }
+                    50% { 
+                        transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+                        opacity: 1;
+                    }
+                    100% { 
+                        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(engineDisplay);
+            
+            // Remover após animação
+            setTimeout(() => {
+                document.body.removeChild(engineDisplay);
+                document.head.removeChild(style);
+            }, 4000);
+        }
+    </script>
+
+    <!-- Botões de Navegação -->
+    <div style="position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px;">
+        <a href="index.html" style="
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.2rem;
+            box-shadow: var(--neon-glow);
+            transition: all 0.3s ease;
+        ">🏠 Voltar ao Início</a>
+    </div>
+</body>
+</html>

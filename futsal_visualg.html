@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisualG 3.0 - Modo Futsal 🏆</title>
+    <style>
+        :root {
+            --primary-color: #00b894;
+            --secondary-color: #00cec9;
+            --accent-color: #fdcb6e;
+            --text-color: #2d3436;
+            --code-bg: #f8f9fa;
+            --border-color: #dfe6e9;
+            --bg-color: #f5f6fa;
+            --container-bg: white;
+            --transition: all 0.3s ease;
+            --success-color: #00b894;
+            --warning-color: #e17055;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #00cec9;
+            --secondary-color: #00b894;
+            --accent-color: #fdcb6e;
+            --text-color: #dfe6e9;
+            --code-bg: #2d3436;
+            --border-color: #636e72;
+            --bg-color: #1e272e;
+            --container-bg: #2d3436;
+        }
+
+        [data-theme="dark"] .concept-box {
+            background: linear-gradient(135deg, #2d3436, #353b48);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        [data-theme="dark"] .concept-box h4 {
+            color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .explanation {
+            background: #2d3436;
+            border: 1px solid var(--primary-color);
+        }
+
+        [data-theme="dark"] .explanation h4 {
+            color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .explanation li {
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .highlight {
+            background: linear-gradient(120deg, #00b894 0%, #00cec9 100%);
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] code {
+            color: #ff7675;
+        }
+
+        [data-theme="dark"] .section {
+            background: rgba(45, 52, 54, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: var(--transition);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-color);
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-weight: bold;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .futsal-tip {
+            background: linear-gradient(135deg, var(--accent-color), #e17055);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #d63031;
+        }
+
+        .futsal-tip h3 {
+            color: white !important;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .section {
+            background: var(--container-bg);
+            margin: 2rem 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid var(--border-color);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-content {
+            padding: 2rem;
+        }
+
+        .concept-box {
+            background: linear-gradient(135deg, #e8f4f8, #d1ecf1);
+            border-left: 5px solid var(--primary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+        }
+
+        .concept-box h4 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .code-container {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .code-label {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px 10px 0 0;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 2rem;
+            border-radius: 0 15px 15px 15px;
+            overflow-x: auto;
+            border: 2px solid var(--border-color);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            line-height: 1.4;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #e84393;
+        }
+
+        .explanation {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+        }
+
+        .explanation h4 {
+            color: #856404;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .explanation ul {
+            margin-left: 1.5rem;
+        }
+
+        .explanation li {
+            margin: 0.8rem 0;
+            font-size: 1.1rem;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8e6cf 0%, #dcedc1 100%);
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #2d3436;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            vertical-align: middle;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .nav-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #a8e6cf, #88d8a3);
+            color: #2d3436;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .summary-box h3 {
+            color: #2d3436 !important;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .section {
+                margin: 1.5rem 0;
+            }
+            
+            .section-header {
+                padding: 1.5rem;
+            }
+            
+            .section-content {
+                padding: 1.5rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                max-width: none;
+                margin: 0.5rem 0;
+            }
+            
+            .concept-box {
+                padding: 1rem;
+            }
+            
+            .explanation {
+                padding: 1rem;
+            }
+            
+            .explanation li {
+                font-size: 1rem;
+            }
+            
+            pre {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .section-header {
+                padding: 1rem;
+            }
+            
+            .section-content {
+                padding: 1rem;
+            }
+            
+            .theme-toggle {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .concept-box h4 {
+                font-size: 1.1rem;
+            }
+            
+            .explanation h4 {
+                font-size: 1.1rem;
+            }
+            
+            pre {
+                padding: 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .return-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-weight: bold;
+        }
+
+        .return-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓 Modo Noturno</button>
+    <button class="return-button" onclick="returnToMain()">🔙 Voltar</button>
+    
+    <div class="header">
+        <h1>🏆 VisualG 3.0 - Modo Futsal</h1>
+        <p>Aprenda programação como se fosse um jogo de futsal: rápido, direto e sem complicação!</p>
+    </div>
+
+    <div class="futsal-tip">
+        <h3>🏃‍♂️ Regra do Futsal da Programação:</h3>
+        <p>Assim como no futsal, aqui você vai aprender os fundamentos básicos primeiro. Depois que dominar o básico, você consegue fazer jogadas mais elaboradas!</p>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" id="prevBtn" onclick="previousSection()" disabled>⬅️ Anterior</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextSection()">Próximo ➡️</button>
+    </div>
+
+    <!-- Seção 1: Introdução -->
+    <div class="section lesson" id="lesson-0">
+        <div class="section-header">
+            <h2>🚀 Bem-vindo ao Time!</h2>
+        </div>
+        <div class="section-content">
+            <div class="concept-box">
+                <h4>🎯 O que é o VisualG?</h4>
+                <p>O VisualG é como um campo de treinamento para programadores iniciantes. É onde você vai aprender a "falar" com o computador usando uma linguagem bem brasileira e fácil de entender!</p>
+            </div>
+
+            <div class="explanation">
+                <h4>🏆 Por que aprender com o "Modo Futsal"?</h4>
+                <ul>
+                    <li><strong>Rápido:</strong> Você aprende o essencial sem enrolação</li>
+                    <li><strong>Prático:</strong> Cada conceito tem um exemplo que você pode testar</li>
+                    <li><strong>Direto:</strong> Sem termos complicados, tudo em português claro</li>
+                    <li><strong>Divertido:</strong> Aprender programação pode ser legal!</li>
+                </ul>
+            </div>
+
+            <div class="summary-box">
+                <h3>🎯 Meta desta aula:</h3>
+                <p>No final, você vai saber usar <strong>Vetores</strong>, <strong>Matrizes</strong>, <strong>Procedimentos</strong>, <strong>Funções</strong>, <strong>Condicionais</strong> e <strong>Loops</strong>. Tudo que precisa para começar a programar!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção 2: Vetores -->
+    <div class="section lesson hidden" id="lesson-1">
+        <div class="section-header">
+            <h2>🧮 Vetores - Seu Primeiro Time</h2>
+        </div>
+        <div class="section-content">
+            <div class="concept-box">
+                <h4>🤔 O que é um Vetor?</h4>
+                <p>Imagine um <strong>banco de reservas</strong> com 5 jogadores numerados de 1 a 5. Cada posição tem um jogador diferente. No VisualG, um vetor é exatamente isso: uma fila de "gavetas" numeradas onde você guarda informações!</p>
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">📝 Exemplo Prático</div>
+                <pre><code>algoritmo "Meu Time de Futsal"
+var
+  jogadores: vetor[1..5] de caractere
+  i: inteiro
+inicio
+  // Escalando o time
+  para i de 1 ate 5 faca
+     escreva("Nome do ", i, "º jogador: ")
+     leia(jogadores[i])
+  fimpara
+
+  // Mostrando o time completo
+  escreval("🏆 SEU TIME:")
+  para i de 1 ate 5 faca
+     escreval("Posição ", i, ": ", jogadores[i])
+  fimpara
+fimalgoritmo</code></pre>
+            </div>
+
+            <div class="explanation">
+                <h4>⚽ Como funciona:</h4>
+                <ul>
+                    <li><span class="highlight">vetor[1..5] de caractere</span> → Cria 5 "gavetas" para guardar nomes</li>
+                    <li><span class="highlight">para i de 1 ate 5</span> → Repete 5 vezes (uma para cada jogador)</li>
+                    <li><span class="highlight">jogadores[i]</span> → Acessa a gaveta número "i"</li>
+                    <li>Primeiro loop: <strong>preenche</strong> o time</li>
+                    <li>Segundo loop: <strong>mostra</strong> o time completo</li>
+                </ul>
+            </div>
+
+            <div class="futsal-tip">
+                <h3>🏃‍♂️ Dica de Craque:</h3>
+                <p>Vetores são perfeitos quando você tem várias coisas do mesmo tipo (nomes, notas, idades). É como ter um armário com gavetas organizadas!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção 3: Matrizes -->
+    <div class="section lesson hidden" id="lesson-2">
+        <div class="section-header">
+            <h2>🧩 Matrizes - A Táti­ca da Quadra</h2>
+        </div>
+        <div class="section-content">
+            <div class="concept-box">
+                <h4>🎯 O que é uma Matriz?</h4>
+                <p>Se o vetor é um banco de reservas, a matriz é a <strong>formação tática na quadra</strong>! Imagine uma quadra dividida em linhas e colunas. Cada posição tem suas coordenadas (linha, coluna). É exatamente assim que funciona uma matriz!</p>
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">📋 Exemplo: Placar de Jogos</div>
+                <pre><code>algoritmo "Placar dos Jogos"
+var
+  placares: vetor[1..3, 1..2] de inteiro
+  i, j: inteiro
+inicio
+  // Registrando os placares (3 jogos, 2 times cada)
+  para i de 1 ate 3 faca
+    escreval("=== JOGO ", i, " ===")
+    para j de 1 ate 2 faca
+      escreva("Gols do time ", j, ": ")
+      leia(placares[i, j])
+    fimpara
+  fimpara
+
+  // Mostrando todos os resultados
+  escreval("🏆 RESULTADOS:")
+  para i de 1 ate 3 faca
+    escreval("Jogo ", i, ": ", placares[i,1], " x ", placares[i,2])
+  fimpara
+fimalgoritmo</code></pre>
+            </div>
+
+            <div class="explanation">
+                <h4>⚽ Entendendo a jogada:</h4>
+                <ul>
+                    <li><span class="highlight">vetor[1..3, 1..2]</span> → 3 linhas (jogos) e 2 colunas (times)</li>
+                    <li><span class="highlight">placares[i, j]</span> → Linha "i", coluna "j"</li>
+                    <li><strong>i</strong> = qual jogo (1, 2 ou 3)</li>
+                    <li><strong>j</strong> = qual time (1 ou 2)</li>
+                    <li>Dois loops aninhados: um para cada dimensão</li>
+                </ul>
+            </div>
+
+            <div class="futsal-tip">
+                <h3>🧠 Pensamento Tático:</h3>
+                <p>Matrizes são como uma tabela de Excel: têm linhas e colunas. Perfeitas para guardar dados organizados, como notas de alunos, vendas por mês, ou placares de jogos!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção 4: Procedimentos -->
+    <div class="section lesson hidden" id="lesson-3">
+        <div class="section-header">
+            <h2>🧾 Procedimentos - Suas Jogadas Especiais</h2>
+        </div>
+        <div class="section-content">
+            <div class="concept-box">
+                <h4>🎯 O que é um Procedimento?</h4>
+                <p>É como ter uma <strong>jogada ensaiada</strong>! Você treina uma sequência de movimentos e, quando precisar, só grita "jogada X!" que todo mundo sabe o que fazer. No VisualG, você cria um procedimento uma vez e usa quantas vezes quiser!</p>
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">⚡ Procedimento Simples</div>
+                <pre><code>algoritmo "Saudação do Time"
+var
+  nome: caractere
+
+// Sua jogada especial!
+procedimento grito_de_guerra()
+inicio
+  escreval("🏆 VAMOS TIME!")
+  escreval("⚽ HOJE É DIA DE VITÓRIA!")
+  escreval("🔥 UNIÃO E FORÇA!")
+fimprocedimento
+
+inicio
+  escreva("Qual seu nome, craque? ")
+  leia(nome)
+  
+  escreval("Beleza, ", nome, "!")
+  grito_de_guerra()  // Chama a jogada especial
+  escreval("Bora jogar!")
+fimalgoritmo</code></pre>
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">🚀 Procedimento com Parâmetro</div>
+                <pre><code>algoritmo "Saudação Personalizada"
+var
+  nome: caractere
+
+// Jogada especial que recebe informação
+procedimento saudar_jogador(nome_do_craque: caractere)
+inicio
+  escreval("🏆 Fala, ", nome_do_craque, "!")
+  escreval("⚽ Seja bem-vindo ao time!")
+  escreval("🔥 Vamos ganhar esse jogo!")
+fimprocedimento
+
+inicio
+  escreva("Seu nome: ")
+  leia(nome)
+  
+  saudar_jogador(nome)  // Passa o nome para o procedimento
+fimalgoritmo</code></pre>
+            </div>
+
+            <div class="explanation">
+                <h4>⚽ Como usar seus procedimentos:</h4>
+                <ul>
+                    <li><span class="highlight">procedimento nome()</span> → Cria a jogada especial</li>
+                    <li><span class="highlight">nome()</span> → Executa a jogada</li>
+                    <li><strong>Com parâmetro:</strong> você pode passar informações para o procedimento</li>
+                    <li><strong>Sem parâmetro:</strong> sempre faz a mesma coisa</li>
+                    <li>Use quando quiser <strong>organizar</strong> seu código</li>
+                </ul>
+            </div>
+
+            <div class="futsal-tip">
+                <h3>🏃‍♂️ Vantagem Tática:</h3>
+                <p>Procedimentos evitam repetição de código. Se você tem algo que faz várias vezes, crie um procedimento! É mais organizado e fácil de manter.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção 5: Funções -->
+    <div class="section lesson hidden" id="lesson-4">
+        <div class="section-header">
+            <h2>🔢 Funções - Calculadora do Craque</h2>
+        </div>
+        <div class="section-content">
+            <div class="concept-box">
+                <h4>🤔 Qual a diferença entre Função e Procedimento?</h4>
+                <p><strong>Procedimento:</strong> Faz uma ação (como gritar "gol!")<br>
+                <strong>Função:</strong> Faz um cálculo e <strong>devolve o resultado</strong> (como calcular a média de gols)</p>
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">📊 Função que Calcula</div>
+                <pre><code>algoritmo "Calculadora de Gols"
+var
+  gols_casa, gols_fora, total: inteiro
+
+// Função que soma os gols e retorna o total
+funcao somar_gols(time1, time2: inteiro): inteiro
+inicio
+  somar_gols := time1 + time2  // Devolve a soma
+fimfuncao
+
+inicio
+  escreva("Gols do time da casa: ")
+  leia(gols_casa)
+  
+  escreva("Gols do time de fora: ")
+  leia(gols_fora)
+  
+  total := somar_gols(gols_casa, gols_fora)  // Recebe o resultado
+  
+  escreval("⚽ Total de gols na partida: ", total)
+fimalgoritmo</code></pre>
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">🏆 Função Mais Elaborada</div>
+                <pre><code>algoritmo "Média de Gols"
+var
+  gols1, gols2, gols3: inteiro
+  media: real
+
+// Função que calcula a média de 3 jogos
+funcao calcular_media(jogo1, jogo2, jogo3: inteiro): real
+inicio
+  calcular_media := (jogo1 + jogo2 + jogo3) / 3
+fimfuncao
+
+inicio
+  escreva("Gols no 1º jogo: ")
+  leia(gols1)
+  escreva("Gols no 2º jogo: ")
+  leia(gols2)
+  escreva("Gols no 3º jogo: ")
+  leia(gols3)
+  
+  media := calcular_media(gols1, gols2, gols3)
+  
+  escreval("🎯 Média de gols: ", media:0:2)
+fimalgoritmo</code></pre>
+            </div>
+
+            <div class="explanation">
+                <h4>⚽ Segredos das Funções:</h4>
+                <ul>
+                    <li><span class="highlight">funcao nome(): tipo</span> → Define que tipo de resultado ela devolve</li>
+                    <li><span class="highlight">nome := resultado</span> → Como a função "entrega" o resultado</li>
+                    <li><span class="highlight">variavel := nome()</span> → Como você "pega" o resultado</li>
+                    <li><strong>Sempre retorna</strong> um valor</li>
+                    <li>Perfeita para cálculos e transformações</li>
+                </ul>
+            </div>
+
+            <div class="futsal-tip">
+                <h3>🧠 Estratégia de Jogo:</h3>
+                <p>Use funções quando precisar fazer cálculos que serão usados várias vezes. É como ter um assistente que sempre te dá a resposta certa!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção 6: Condicionais -->
+    <div class="section lesson hidden" id="lesson-5">
+        <div class="section-header">
+            <h2>❓ Condicionais - Tomada de Decisão</h2>
+        </div>
+        <div class="section-content">
+            <div class="concept-box">
+                <h4>🎯 O que são Condicionais?</h4>
+                <p>São como as <strong>decisões que você toma durante o jogo</strong>! "SE o goleiro saiu do gol, ENTÃO chuta de longe, SENÃO dribla e chuta de perto". No VisualG, usamos SE...ENTÃO...SENÃO para o computador tomar decisões!</p>
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">⚡ Decisão Simples</div>
+                <pre><code>algoritmo "Pode Jogar?"
+var
+  idade: inteiro
+inicio
+  escreva("Qual sua idade? ")
+  leia(idade)
+  
+  se idade >= 16 entao
+    escreval("🏆 Pode jogar no time principal!")
+  senao
+    escreval("⚽ Vai para as categorias de base!")
+  fimse
+fimalgoritmo</code></pre>
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">🏆 Decisões Múltiplas</div>
+                <pre><code>algoritmo "Classificação do Jogador"
+var
+  gols: inteiro
+inicio
+  escreva("Quantos gols você fez no campeonato? ")
+  leia(gols)
+  
+  se gols >= 20 entao
+    escreval("🔥 ARTILHEIRO! Você é craque!")
+  senao
+    se gols >= 10 entao
+      escreval("⚽ Muito bom! Jogador importante!")
+    senao
+      se gols >= 5 entao
+        escreval("👍 Razoável, pode melhorar!")
+      senao
+        escreval("💪 Precisa treinar mais os chutes!")
+      fimse
+    fimse
+  fimse
+fimalgoritmo</code></pre>
+            </div>
+
+            <div class="explanation">
+                <h4>⚽ Regras do Jogo:</h4>
+                <ul>
+                    <li><span class="highlight">se condição entao</span> → "Se isso for verdade, faça..."</li>
+                    <li><span class="highlight">senao</span> → "Caso contrário, faça..."</li>
+                    <li><span class="highlight">fimse</span> → "Fim da decisão"</li>
+                    <li>Pode ter <strong>SE dentro de SE</strong> (decisões aninhadas)</li>
+                    <li>Use <strong>>=, <=, =, <>, >, <</strong> para comparar</li>
+                </ul>
+            </div>
+
+            <div class="futsal-tip">
+                <h3>🧠 Pensamento Estratégico:</h3>
+                <p>Condicionais fazem seu programa "inteligente"! Ele consegue reagir diferente dependendo da situação, como um bom jogador que se adapta ao jogo.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção 7: Loops -->
+    <div class="section lesson hidden" id="lesson-6">
+        <div class="section-header">
+            <h2>🔁 Loops - Treino e Repetição</h2>
+        </div>
+        <div class="section-content">
+            <div class="concept-box">
+                <h4>🎯 O que são Loops?</h4>
+                <p>São como os <strong>treinos repetitivos</strong>! "Faça 10 embaixadinhas", "Chute 20 vezes no gol", "Corra 5 voltas na quadra". No VisualG, os loops fazem o computador repetir tarefas automaticamente!</p>
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">🏃‍♂️ Loop PARA (quando você sabe quantas vezes)</div>
+                <pre><code>algoritmo "Treino de Chutes"
+var
+  i, gols_feitos: inteiro
+inicio
+  gols_feitos := 0
+  
+  escreval("🏆 TREINO: 10 chutes ao gol!")
+  
+  para i de 1 ate 10 faca
+    escreval("Chute número ", i, "...")
+    
+    // Simula se fez gol (você pode testar digitando 1 para gol)
+    escreva("Fez gol? (1=sim, 0=não): ")
+    leia(resposta)
+    
+    se resposta = 1 entao
+      gols_feitos := gols_feitos + 1
+      escreval("⚽ GOOOOL!")
+    senao
+      escreval("❌ Errou!")
+    fimse
+  fimpara
+  
+  escreval("🏆 Treino finalizado!")
+  escreval("Você fez ", gols_feitos, " gols em 10 chutes!")
+fimalgoritmo</code></pre>
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">🔄 Loop ENQUANTO (quando não sabe quantas vezes)</div>
+                <pre><code>algoritmo "Treino até Acertar"
+var
+  tentativas: inteiro
+  acertou: logico
+inicio
+  tentativas := 0
+  acertou := falso
+  
+  escreval("🏆 TREINO: Chute até acertar!")
+  
+  enquanto nao acertou faca
+    tentativas := tentativas + 1
+    escreval("Tentativa ", tentativas, "...")
+    
+    escreva("Acertou? (1=sim, 0=não): ")
+    leia(resposta)
+    
+    se resposta = 1 entao
+      acertou := verdadeiro
+      escreval("⚽ GOOOOL! Finalmente!")
+    senao
+      escreval("❌ Errou! Tenta de novo!")
+    fimse
+  fimenquanto
+  
+  escreval("🏆 Treino finalizado!")
+  escreval("Você precisou de ", tentativas, " tentativas para acertar!")
+fimalgoritmo</code></pre>
+            </div>
+
+            <div class="code-container">
+                <div class="code-label">🔄 Loop REPITA...ATE (executa pelo menos uma vez)</div>
+                <pre><code>algoritmo "Treino de Pênaltis"
+var
+  tentativas: inteiro
+  resposta: inteiro
+inicio
+  tentativas := 0
+  
+  escreval("🏆 TREINO: Pênaltis até acertar!")
+  
+  repita
+    tentativas := tentativas + 1
+    escreval("Pênalti número ", tentativas, "...")
+    
+    escreva("Acertou? (1=sim, 0=não): ")
+    leia(resposta)
+    
+    se resposta = 1 entao
+      escreval("⚽ GOOOOL! Pênalti convertido!")
+    senao
+      escreval("❌ Defendido! Tenta de novo!")
+    fimse
+  ate resposta = 1
+  
+  escreval("🏆 Treino finalizado!")
+  escreval("Você precisou de ", tentativas, " tentativas para acertar o pênalti!")
+fimalgoritmo</code></pre>
+            </div>
+
+            <div class="explanation">
+                <h4>⚽ Tipos de Loops:</h4>
+                <ul>
+                    <li><span class="highlight">para i de 1 ate 10</span> → Quando sabe quantas vezes vai repetir</li>
+                    <li><span class="highlight">enquanto condição</span> → Repete enquanto a condição for verdadeira</li>
+                    <li><span class="highlight">repita...ate</span> → Repete até a condição ser verdadeira</li>
+                    <li>Use <strong>PARA</strong> quando souber o número de repetições</li>
+                    <li>Use <strong>ENQUANTO</strong> quando não souber</li>
+                    <li>Use <strong>REPITA...ATE</strong> quando precisar executar pelo menos uma vez</li>
+                </ul>
+            </div>
+
+            <div class="futsal-tip">
+                <h3>🧠 Dica de Treino:</h3>
+                <p>Loops são ótimos para automatizar tarefas repetitivas. É como ter um treinador que te faz repetir o exercício até acertar!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLesson = 0;
+        const totalLessons = 7;
+
+        function updateProgress() {
+            const progress = (currentLesson / (totalLessons - 1)) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function updateButtons() {
+            document.getElementById('prevBtn').disabled = currentLesson === 0;
+            document.getElementById('nextBtn').disabled = currentLesson === totalLessons - 1;
+        }
+
+        function showLesson(index) {
+            document.querySelectorAll('.lesson').forEach(lesson => {
+                lesson.classList.add('hidden');
+            });
+            document.getElementById('lesson-' + index).classList.remove('hidden');
+            currentLesson = index;
+            updateProgress();
+            updateButtons();
+        }
+
+        function nextSection() {
+            if (currentLesson < totalLessons - 1) {
+                showLesson(currentLesson + 1);
+            }
+        }
+
+        function previousSection() {
+            if (currentLesson > 0) {
+                showLesson(currentLesson - 1);
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        function returnToMain() {
+            window.location.href = 'index.html';
+        }
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.body.setAttribute('data-theme', savedTheme);
+        }
+
+        // Initialize the first lesson
+        showLesson(0);
+    </script>
+</body>
+</html>
