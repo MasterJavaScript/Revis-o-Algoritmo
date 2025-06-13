@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisualG 3.0 - Modo Bebado 🍺</title>
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #ffe66d;
+            --text-color: #2c3e50;
+            --bg-color: #f8f9fa;
+            --container-bg: #ffffff;
+            --code-bg: #f1f2f6;
+            --border-color: #ddd;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #ff7675;
+            --secondary-color: #74b9ff;
+            --accent-color: #fdcb6e;
+            --text-color: #dfe6e9;
+            --bg-color: #2d3436;
+            --container-bg: #636e72;
+            --code-bg: #2d3436;
+            --border-color: #636e72;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--bg-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 999;
+            transform: rotate(-5deg);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(5deg) scale(1.1);
+            animation: wiggle 0.5s ease-in-out;
+        }
+
+        .return-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 999;
+            transform: rotate(5deg);
+        }
+
+        .return-button:hover {
+            transform: rotate(-5deg) scale(1.1);
+            animation: wiggle 0.5s ease-in-out;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(5deg) scale(1.1); }
+            25% { transform: rotate(8deg) scale(1.1); }
+            75% { transform: rotate(2deg) scale(1.1); }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            transform: rotate(-2deg);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: rotate(-2deg) translateY(0); }
+            40% { transform: rotate(-2deg) translateY(-10px); }
+            60% { transform: rotate(-2deg) translateY(-5px); }
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            font-size: 2.2rem;
+            margin: 40px 0 20px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            transform: rotate(1deg);
+        }
+
+        h3 {
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            margin: 25px 0 15px 0;
+            background: var(--primary-color);
+            padding: 15px;
+            border-radius: 15px;
+            transform: rotate(-1deg);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .intro {
+            font-size: 1.3rem;
+            text-align: center;
+            background: var(--accent-color);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 30px 0;
+            color: #2c3e50;
+            font-weight: bold;
+            transform: rotate(0.5deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .beer-emoji {
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .beer-emoji:hover {
+            transform: scale(1.5) rotate(20deg);
+            filter: saturate(2);
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 3px dashed var(--primary-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            transform: rotate(-0.5deg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        code {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .explicacao {
+            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            color: #2c3e50;
+            font-weight: bold;
+            transform: rotate(0.5deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .explicacao h4 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .dica {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transform: rotate(-1deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .section {
+            margin: 50px 0;
+            padding: 30px;
+            border: 3px solid var(--secondary-color);
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            transform: rotate(0.2deg);
+        }
+
+        ul {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .floating-emojis {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 2rem;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .party-button {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            transform: rotate(-2deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .party-button:hover {
+            animation: party 0.5s ease-in-out;
+            transform: rotate(2deg) scale(1.1);
+        }
+
+        @keyframes party {
+            0%, 100% { transform: rotate(2deg) scale(1.1); }
+            25% { transform: rotate(5deg) scale(1.1); }
+            75% { transform: rotate(-1deg) scale(1.1); }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { padding: 20px; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.8rem; }
+            h3 { font-size: 1.5rem; }
+            pre { font-size: 1rem; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-emojis">
+        <div class="floating-emoji" style="left: 10%; animation-delay: 0s;">🍺</div>
+        <div class="floating-emoji" style="left: 20%; animation-delay: 1s;">💻</div>
+        <div class="floating-emoji" style="left: 30%; animation-delay: 2s;">🎉</div>
+        <div class="floating-emoji" style="left: 40%; animation-delay: 3s;">🚀</div>
+        <div class="floating-emoji" style="left: 50%; animation-delay: 4s;">😎</div>
+        <div class="floating-emoji" style="left: 60%; animation-delay: 5s;">🔥</div>
+        <div class="floating-emoji" style="left: 70%; animation-delay: 0.5s;">⚡</div>
+        <div class="floating-emoji" style="left: 80%; animation-delay: 1.5s;">🎯</div>
+        <div class="floating-emoji" style="left: 90%; animation-delay: 2.5s;">🧠</div>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Trocar Tema</button>
+    <button class="return-button" onclick="returnToMain()">🔙 Voltar</button>
+
+    <div class="container">
+        <h1>🍺 VisualG 3.0 - MODO BEBADO! 🍺</h1>
+
+        <div class="intro">
+            Salve, parceiro! <span class="beer-emoji" onclick="addBeer()">🍺</span> Vou te ensinar VisualG de um jeito tão simples que até depois de umas biritas você vai entender! 
+            <br><br>
+            <strong>Preparado? Bora lá!</strong>
+        </div>
+
+        <button class="party-button" onclick="startParty()">🎉 COMEÇAR A FESTA! 🎉</button>
+
+        <div class="section">
+            <h2>🧮 VETORES - É tipo uma caixa de cerveja!</h2>
+            
+            <div class="explicacao">
+                <h4>🍺 Pensa assim, mano:</h4>
+                <p>Vetor é igual uma <strong>caixa de cerveja</strong> com várias latinhas numeradas! Se você tem uma caixa com 6 cervejas, cada uma tem seu lugarzinho: posição 1, 2, 3, 4, 5, 6!</p>
+            </div>
+
+            <h3>🚀 Código pra você não esquecer nunca:</h3>
+            <pre><code>algoritmo "Caixa de Cerveja"
+var
+  cervejas: vetor[1..6] de caractere
+  i: inteiro
+inicio
+  // Enchendo a caixa
+  para i de 1 ate 6 faca
+     escreva("Qual cerveja vai na posição ", i, "? ")
+     leia(cervejas[i])
+  fimpara
+
+  // Vendo o que tem na caixa
+  escreval("SUA CAIXA DE CERVEJA:")
+  para i de 1 ate 6 faca
+     escreval("Posição ", i, ": ", cervejas[i])
+  fimpara
+fimalgoritmo</code></pre>
+
+            <div class="dica">
+                💡 <strong>DICA DE OURO:</strong> O vetor[1..6] significa que você tem 6 espaços numerados de 1 até 6. Igual uma caixa de cerveja mesmo!
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🧩 MATRIZES - É tipo um engradado!</h2>
+            
+            <div class="explicacao">
+                <h4>🍻 Agora o bagulho ficou sério:</h4>
+                <p>Matriz é igual um <strong>engradado de cerveja</strong>! Tem fileiras (linhas) e colunas. Tipo: 2 fileiras com 3 cervejas cada = 6 cervejas total!</p>
+            </div>
+
+            <h3>🧩 Bora pro código:</h3>
+            <pre><code>algoritmo "Engradado de Cerveja"
+var
+  engradado: vetor[1..2, 1..3] de caractere
+  linha, coluna: inteiro
+inicio
+  // Enchendo o engradado
+  para linha de 1 ate 2 faca
+    para coluna de 1 ate 3 faca
+      escreva("Cerveja da fileira ", linha, " coluna ", coluna, ": ")
+      leia(engradado[linha, coluna])
+    fimpara
+  fimpara
+
+  // Mostrando o engradado
+  escreval("SEU ENGRADADO:")
+  para linha de 1 ate 2 faca
+    para coluna de 1 ate 3 faca
+      escreval("Fileira ", linha, " Coluna ", coluna, ": ", engradado[linha, coluna])
+    fimpara
+  fimpara
+fimalgoritmo</code></pre>
+
+            <div class="dica">
+                🎯 <strong>SACOU?</strong> É só imaginar uma mesa com cervejas organizadinhas em fileiras e colunas!
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🧾 PROCEDIMENTOS - Seu garçom particular!</h2>
+            
+            <div class="explicacao">
+                <h4>🍺 É assim, chefe:</h4>
+                <p>Procedimento é igual chamar o <strong>garçom</strong>! Você grita "Ô garçom!" e ele vem fazer alguma coisa pra você. Não volta com nada, só faz o serviço!</p>
+            </div>
+
+            <h3>⚡ Garçom básico:</h3>
+            <pre><code>algoritmo "Chamando o Garçom"
+var
+  nome: caractere
+
+// Seu garçom particular
+procedimento garcom()
+inicio
+  escreval("🍺 FALA AÍ, PATRÃO! Bem-vindo ao bar!")
+fimprocedimento
+
+inicio
+  escreva("Qual seu nome? ")
+  leia(nome)
+
+  garcom()  // Chamando o garçom
+
+  escreval("Prazer, ", nome, "! Vamos beber! 🍻")
+fimalgoritmo</code></pre>
+
+            <h3>🚀 Garçom que sabe seu nome:</h3>
+            <pre><code>algoritmo "Garçom Profissional"
+var
+  cliente: caractere
+
+// Garçom que personaliza o atendimento
+procedimento atendimento(nomeCliente: caractere)
+inicio
+  escreval("🍺 E aí, ", nomeCliente, "! O que vai ser hoje?")
+fimprocedimento
+
+inicio
+  escreva("Seu nome: ")
+  leia(cliente)
+
+  atendimento(cliente)  // Garçom já sabe quem você é!
+
+fimalgoritmo</code></pre>
+
+            <div class="dica">
+                🎪 <strong>RESUMINDO:</strong> Procedimento é sua função que FAZ alguma coisa, mas não te devolve nada!
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔢 FUNÇÕES - Seu calculador de troco!</h2>
+            
+            <div class="explicacao">
+                <h4>🧮 Ó só:</h4>
+                <p>Função é igual um <strong>calculador de troco</strong>! Você dá o dinheiro pra ele, ele faz a conta e te <strong>DEVOLVE</strong> o troco certinho!</p>
+            </div>
+
+            <h3>⚙️ Calculadora de troco:</h3>
+            <pre><code>algoritmo "Calculadora de Troco"
+var
+  preco, dinheiro, troco: real
+
+// Função que calcula o troco
+funcao calcularTroco(valorPago, valorProduto: real): real
+inicio
+  calcularTroco := valorPago - valorProduto
+fimfuncao
+
+inicio
+  escreva("Preço da cerveja: R$ ")
+  leia(preco)
+
+  escreva("Quanto você deu: R$ ")
+  leia(dinheiro)
+
+  troco := calcularTroco(dinheiro, preco)
+
+  escreval("Seu troco: R$ ", troco:0:2)
+fimalgoritmo</code></pre>
+
+            <div class="dica">
+                💰 <strong>DIFERENÇA:</strong> Função sempre te DEVOLVE alguma coisa! Procedimento só faz o serviço!
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>❓ CONDICIONAL SE - Seu segurança do bar!</h2>
+            
+            <div class="explicacao">
+                <h4>🚪 Tipo assim:</h4>
+                <p>O comando SE é igual o <strong>segurança do bar</strong>: SE você tem mais de 18 anos, ENTÃO pode entrar, SENÃO fica na porta!</p>
+            </div>
+
+            <h3>✅ Segurança do bar:</h3>
+            <pre><code>algoritmo "Segurança do Bar"
+var
+  idade: inteiro
+inicio
+  escreva("Quantos anos você tem? ")
+  leia(idade)
+
+  se idade >= 18 entao
+    escreval("🍺 PODE ENTRAR! Bem-vindo ao bar!")
+  senao
+    escreval("⛔ PÁRA AÍ! Menor de idade não entra!")
+  fimse
+fimalgoritmo</code></pre>
+
+            <div class="dica">
+                🎯 <strong>SIMPLES ASSIM:</strong> SE a condição for verdade, faz uma coisa. SENÃO, faz outra!
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔁 LOOPS - Seus tipos de repetição!</h2>
+            
+            <div class="explicacao">
+                <h4>📱 Loops são igual:</h4>
+                <p><strong>PARA:</strong> "Vou beber exatamente 3 cervejas"<br>
+                <strong>ENQUANTO:</strong> "Vou beber enquanto tiver dinheiro"<br>
+                <strong>REPITA:</strong> "Vou tentar a senha até acertar"</p>
+            </div>
+
+            <h3>🚀 PARA - Contador de cervejas:</h3>
+            <pre><code>algoritmo "Contador de Cervejas"
+var
+  cerveja: inteiro
+inicio
+  para cerveja de 1 ate 5 faca
+    escreval("🍺 Cerveja número ", cerveja, " - Tim tim!")
+  fimpara
+  
+  escreval("🤢 Agora chega! Foram 5 cervejas!")
+fimalgoritmo</code></pre>
+
+            <h3>🌀 ENQUANTO - Beber enquanto tem dinheiro:</h3>
+            <pre><code>algoritmo "Enquanto Tem Dinheiro"
+var
+  dinheiro: real
+inicio
+  dinheiro := 50.00
+
+  enquanto dinheiro >= 5.00 faca
+    escreval("🍺 Mais uma! Restam R$ ", dinheiro:0:2)
+    dinheiro := dinheiro - 5.00
+  fimenquanto
+  
+  escreval("💸 Sem grana! Hora de ir embora!")
+fimalgoritmo</code></pre>
+
+            <h3>🔁 REPITA - Tentando a senha do Wi-Fi:</h3>
+            <pre><code>algoritmo "Senha do Wi-Fi do Bar"
+var
+  senha: caractere
+inicio
+  repita
+    escreva("🔐 Qual a senha do Wi-Fi? ")
+    leia(senha)
+    
+    se senha <> "cerveja123" entao
+      escreval("❌ Senha errada! Tenta de novo!")
+    fimse
+    
+  ate senha = "cerveja123"
+
+  escreval("✅ CONECTADO! Agora pode postar stories!")
+fimalgoritmo</code></pre>
+
+            <div class="dica">
+                🧠 <strong>RESUMO DOS LOOPS:</strong><br>
+                • PARA = quando você sabe quantas vezes<br>
+                • ENQUANTO = enquanto a condição for verdade<br>
+                • REPITA = até conseguir o que quer
+            </div>
+        </div>
+
+        <div class="explicacao" style="text-align: center; margin-top: 50px;">
+            <h4>🎉 PARABÉNS, VOCÊ BEBEU TODO O CONHECIMENTO!</h4>
+            <p>Agora você manja de VisualG igual um programador raiz! 🍺<br>
+            Hora de praticar e fazer uns códigos brabos!</p>
+            <button class="party-button" onclick="celebrar()">🎊 CELEBRAR! 🎊</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Carrega tema salvo
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.body.setAttribute('data-theme', savedTheme);
+        }
+
+        function addBeer() {
+            const beer = document.createElement('div');
+            beer.innerHTML = '🍺';
+            beer.style.position = 'fixed';
+            beer.style.left = Math.random() * window.innerWidth + 'px';
+            beer.style.top = Math.random() * window.innerHeight + 'px';
+            beer.style.fontSize = '2rem';
+            beer.style.zIndex = '1000';
+            beer.style.animation = 'float 2s ease-out forwards';
+            document.body.appendChild(beer);
+            
+            setTimeout(() => {
+                beer.remove();
+            }, 2000);
+        }
+
+        function startParty() {
+            // Criar confetes
+            for(let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    createConfetti();
+                }, i * 100);
+            }
+            
+            // Tocar som de comemoração (simulado)
+            alert('🎉 FESTA COMEÇOU! 🎉\nVamos aprender VisualG bebado! 🍺');
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            const emojis = ['🎉', '🎊', '🍺', '🚀', '⚡', '🔥'];
+            confetti.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            confetti.style.position = 'fixed';
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = '-50px';
+            confetti.style.fontSize = '2rem';
+            confetti.style.zIndex = '1000';
+            confetti.style.animation = 'fall 3s linear forwards';
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 3000);
+        }
+
+        function celebrar() {
+            alert('🎊 PARABÉNS! 🎊\nVocê agora é um programador VisualG RAIZ!\nVai com tudo, parceiro! 🍺🚀');
+            startParty();
+        }
+
+        function returnToMain() {
+            window.location.href = 'index.html';
+        }
+
+        // Adicionar estilo para animações
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(${window.innerHeight + 100}px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
